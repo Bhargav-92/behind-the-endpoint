@@ -5,6 +5,8 @@ import type { CourseLesson, LessonStep } from "@/data/course";
 import { useRouter } from "next/navigation";
 import { useCourseSession } from "@/components/CourseSession";
 import { lessonPath } from "@/lib/routes";
+import { TraceScene } from "./TraceScene";
+import { LessonExtras } from "./LessonExtras";
 import "./lesson.css";
 
 const centers = [100, 380, 660];
@@ -57,7 +59,8 @@ function Trace({ data, current, paused, onToggle }: {
       <button id="motion" type="button" aria-pressed={paused} onClick={onToggle}>{paused ? "Resume animation" : "Pause animation"}</button>
     </div>
     <div className="diagram">
-      <svg className="block max-h-44 w-full max-[681px]:min-h-[92px]" viewBox="0 0 760 154" role="img" aria-label={`${data.nodes[current.from]} sends to ${data.nodes[current.to]}`}>
+      <TraceScene nodes={data.nodes} from={current.from} to={current.to} paused={paused} />
+      <svg className="trace-fallback block max-h-44 w-full max-[681px]:min-h-[92px]" viewBox="0 0 760 154" role="img" aria-label={`${data.nodes[current.from]} sends to ${data.nodes[current.to]}`}>
         <defs>
           <marker id="trace-tip" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
             <path d="M0 0L10 5L0 10Z" fill="var(--pulse)" />
@@ -116,5 +119,6 @@ export function Lesson({ data, lesson, step }: {
         </div>
       </section>
     </div>
+    <LessonExtras key={lesson} lesson={lesson} />
   </article>;
 }

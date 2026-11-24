@@ -1,4 +1,4 @@
-/* Hallmark | Backend Atlas | Course workbench | eucalyptus and graphite | app redesign */
+/* Hallmark | Behind the Endpoint | Course workbench | cobalt and violet | app redesign */
 /* A moving packet and a fixed arrow distinguish traffic from the direction of travel. */
 .lesson h1 {
   text-wrap: balance;
@@ -122,3 +122,13 @@
 @media (prefers-reduced-motion: reduce) {
   .trace-signal { animation: none; }
 }
+
+.trace-scene { display: none; max-width: 800px; margin-inline: auto; }
+.trace-scene[data-ready="true"] { display: block; }
+.trace-scene[data-ready="true"] + .trace-fallback { display: none; }
+.trace-viewport { width: 100%; aspect-ratio: 4 / 1; min-height: 96px; }
+.trace-viewport canvas { display: block; width: 100%; height: 100%; }
+.trace-labels { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); text-align: center; color: var(--boardtext); padding-bottom: 12px; font-weight: 600; font-size: clamp(.78rem, 1.7vw, 1rem); }
+.trace-labels span { padding-inline: 3px; overflow-wrap: anywhere; }
+.trace-labels [data-role="source"] { color: var(--node-blue); }
+.trace-labels [data-role="destination"] { color: var(--node-violet); }

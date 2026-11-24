@@ -1,0 +1,20 @@
+export const demos = [
+  ["book ID", "42", 'const books = {42: "Night Train"};\nreturn books[input] ? {status: 200, title: books[input]} : {status: 404};'],
+  ["route", "/books", 'const routes = {"/books": "List books", "/health": "OK"};\nreturn Object.hasOwn(routes, input) ? routes[input] : "404 Not Found";'],
+  ["request ID", "req-7", 'const request = {headers: {}};\nrequest.headers["x-request-id"] = input;\nreturn request;'],
+  ["book title", "Night Train", 'const title = input.trim();\nreturn title ? {status: 201, book: {id: 1, title}} : {status: 422};'],
+  ["quantity", "3", 'const n = Number(input);\nreturn Number.isInteger(n) && n > 0 ? {quantity: n} : {error: "Enter a positive integer"};'],
+  ["last seen ID", "2", 'const ids = [1, 2, 4, 7, 8];\nreturn ids.filter(id => id > Number(input)).slice(0, 2);'],
+  ["author ID", "2", 'const authors = {1: "Ada", 2: "Mira"};\nconst books = [{title: "Dawn", author: 2}];\nreturn books.filter(b => b.author === Number(input)).map(b => [b.title, authors[b.author]]);'],
+  ["lookup key", "b42", 'const index = new Map([["b42", 10], ["b12", 8]]);\nreturn {rowOffset: index.get(input) ?? null};'],
+  ["transfer amount", "25", 'const amount = Number(input);\nconst balances = [100, 40];\nif (!(amount > 0 && amount <= balances[0])) return balances;\nreturn [balances[0] - amount, balances[1] + amount];'],
+  ["session ID", "demo-session", 'const sessions = new Map([["demo-session", "reader"]]);\nreturn sessions.get(input) ?? "Sign in required";'],
+  ["current user", "reader", 'const document = {owner: "reader"};\nreturn input === document.owner ? "Allowed" : "Forbidden";'],
+  ["verification result (pass/fail)", "pass", '// Models the decision after a password library verifies the stored hash.\nreturn input === "pass" ? "Issue a session" : "Invalid credentials";'],
+  ["next job", "email receipt", 'const queue = ["resize image"];\nqueue.push(input);\nreturn {processing: queue.shift(), waiting: queue};'],
+  ["book key", "b42", 'const cache = new Map([["b42", "Night Train"]]);\nif (cache.has(input)) return {source: "cache", value: cache.get(input)};\nreturn {source: "database lookup", key: input};'],
+  ["retry key", "order-7", 'const receipts = new Map();\nfunction submit(key) {\n  if (!receipts.has(key)) receipts.set(key, receipts.size + 1);\n  return receipts.get(key);\n}\nreturn [submit(input), submit(input)];'],
+  ["expected status", "200", 'const response = {status: 200, body: {ok: true}};\nreturn response.status === Number(input) && response.body.ok ? "PASS" : "FAIL";'],
+  ["trace ID", "trace-3", 'return ["api", "database"].map((service, i) => ({trace: input, service, span: i + 1, parent: i || null}));'],
+  ["ready new replicas", "2", 'const ready = Number(input);\nif (!Number.isInteger(ready) || ready < 0 || ready > 3) return "Choose 0–3";\nreturn {oldServing: 3 - ready, newServing: ready};']
+] as const;

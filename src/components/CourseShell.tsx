@@ -34,7 +34,7 @@ export default function CourseShell({ children, course }: { children: ReactNode;
     setResume(lessonPath(...savedPosition(course.map(item => item.steps))));
     const completed = read("completed", []);
     if (Array.isArray(completed)) setDone([...new Set(completed.filter(i => Number.isInteger(i) && i >= 0 && i < course.length))]);
-    setDark(read("dark",false) === true);
+    setDark(read("dark",true) === true);
     media.addEventListener("change",resize);
     return () => {
       media.removeEventListener("change",resize);
@@ -86,7 +86,7 @@ export default function CourseShell({ children, course }: { children: ReactNode;
     [item.group,item.title,item.intro].join(" ").toLowerCase().includes(query.trim().toLowerCase()));
   return <CourseSession.Provider value={{ finish, quiz, setQuiz, paused, togglePause: () => setPaused(value => !value) }}>
     <header>
-      <Link className="brand" href={lessonPath(0)}><span className="mark" aria-hidden="true">▱</span>Backend Atlas</Link>
+      <Link className="brand" href={lessonPath(0)}><img src="/endpoint-logo.svg" width="42" height="42" alt="" /><span className="wordmark"><small>behind the</small>endpoint<i aria-hidden="true" /></span></Link>
       <nav aria-label="Workspace">{Object.entries(sections).map(([name,label]) =>
         <Link className={(view || "learn") === name ? "selected" : ""} key={name} href={name === "learn" ? resume : "/"+name}
           aria-current={(view || "learn") === name ? "page" : undefined}>{label}</Link>)}</nav>

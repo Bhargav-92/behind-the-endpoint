@@ -1,4 +1,4 @@
-/* Hallmark · Backend Atlas · scope: app · redesign: full · theme: brand · signature: live request trace · typography: humanist sans and code mono */
+/* Hallmark · Behind the Endpoint · scope: app · redesign: full · theme: brand · signature: live request trace · typography: humanist sans and code mono */
 /* Hallmark · pre-emit critique: P5 H4 E5 S4 R5 V4 · weakest: V, interchangeable boxes buried the course structure; ruled index and workspace tabs now distinguish navigation from study. */
 /* Hallmark · answered F7 · The request controls share a tactile border and radius; the response uses the dark execution surface and cheatsheets use open horizontal rules. */
 @layer theme, base, components, utilities;
@@ -18,31 +18,34 @@
 
 :root {
   color-scheme: light;
-  --page: #f8faf7;
+  --page: #f7f8ff;
   --panel: #ffffff;
-  --ink: #182b25;
-  --muted: #53665d;
-  --line: #d6dfd9;
-  --tint: #e2f1e8;
-  --accent: #146044;
-  --button: #164c38;
+  --ink: #192149;
+  --muted: #535e82;
+  --line: #d9ddf2;
+  --tint: #ece9ff;
+  --accent: #5637b4;
+  --button: #4d50a9;
   --white: #ffffff;
-  --board: #102b24;
-  --boardtext: #ecfff2;
-  --wire: #5c8173;
-  --pulse: #b4efa1;
-  --grid: #305046;
-  --shade: rgba(12, 29, 22, .55);
+  --board: #0b1220;
+  --boardtext: #f1efff;
+  --node-blue: #22d3ee;
+  --node-violet: #8388f1;
+  --node-idle: #7782af;
+  --wire: #808fd0;
+  --pulse: #34d399;
+  --grid: #333d69;
+  --shade: rgba(14, 18, 47, .62);
   --sans: Inter, "Segoe UI", Arial, sans-serif;
   --mono: "IBM Plex Mono", Consolas, monospace;
-  --dark-page: #101a17;
-  --dark-panel: #17251f;
-  --dark-ink: #edf6ef;
-  --dark-muted: #aec2b6;
-  --dark-line: #364c40;
-  --dark-tint: #243e31;
-  --dark-accent: #b4efa1;
-  --dark-button: #235b40;
+  --dark-page: #0b1220;
+  --dark-panel: #191e38;
+  --dark-ink: #eff0ff;
+  --dark-muted: #b5bedf;
+  --dark-line: #383e60;
+  --dark-tint: #2b2851;
+  --dark-accent: #34d399;
+  --dark-button: #4356bb;
   --shell-width: 92rem;
   --rail: 16rem;
   --header-height: 4.5rem;
@@ -290,3 +293,15 @@ dialog input { width: 100%; margin: 1rem 0 .5rem; }
   *, *::after, *::before { animation-duration: 0s !important; transition-duration: 0s !important; }
 }
 }
+
+.wordmark {display:grid;grid-template-columns:auto auto;align-items:center;font:700 1.4rem/1 var(--mono);letter-spacing:-.055em}
+.wordmark small {grid-column:span 2;font:500 .75rem/1.3 var(--mono);letter-spacing:0;color:var(--muted)}
+.wordmark i {width:.45em;height:.78em;background:var(--node-blue);margin-left:.12em}
+.lesson-extras {display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:2rem;margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--line)}
+.lesson-extras pre {white-space:pre-wrap;overflow-wrap:anywhere;color:var(--pulse)}
+.lesson-extras form {display:flex;align-items:end;flex-wrap:wrap;gap:.75rem}
+.lesson-extras label,.video-preview {display:grid;gap:.5rem}
+.video-preview span {position:relative}
+.video-preview img {width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:.6rem;background:var(--board)}
+.video-preview b {position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--board);color:#fbbf24;padding:.3rem .8rem;border-radius:.4rem}
+@media(max-width:760px){.lesson-extras{grid-template-columns:minmax(0,1fr)}}

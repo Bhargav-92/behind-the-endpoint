@@ -7,7 +7,7 @@ import course from "@/data/course";
 const outline = course.map(({ title, group, intro, steps }) => ({ title, group, intro, steps: steps.length }));
 
 export const metadata: Metadata = {
-  title: { default: "Backend Atlas", template: "%s | Backend Atlas" },
+  title: { default: "Behind the Endpoint", template: "%s | Behind the Endpoint" },
   description: "Learn backend engineering by tracing requests, testing API behavior, and practicing one scenario at a time."
 };
 
