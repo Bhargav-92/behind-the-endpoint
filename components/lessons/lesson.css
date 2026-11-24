@@ -1,0 +1,124 @@
+/* Hallmark | Backend Atlas | Course workbench | eucalyptus and graphite | app redesign */
+/* A moving packet and a fixed arrow distinguish traffic from the direction of travel. */
+.lesson h1 {
+  text-wrap: balance;
+  letter-spacing: -.055em;
+  line-height: 1.04;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+
+.lesson .intro { max-width: 68ch; }
+
+.lesson .trace-board {
+  background: var(--board);
+  color: var(--boardtext);
+  overflow: clip;
+  border: 1px solid var(--grid);
+  border-radius: 12px;
+  margin: 20px 0;
+}
+
+.trace-board .boardhead, .trace-board .boardfoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
+}
+
+.trace-board .boardhead { border-bottom: 1px solid var(--grid); }
+.trace-board .boardhead strong { font-size: 1rem; }
+
+.trace-board #motion {
+  color: var(--boardtext);
+  background: var(--board);
+  border: 1px solid var(--wire);
+  padding: 4px 12px;
+}
+
+.trace-board #motion:hover { background: var(--grid); }
+.trace-board #motion:focus-visible { outline-color: var(--pulse); }
+
+.trace-board .diagram {
+  background-color: var(--board);
+  background-image: radial-gradient(var(--grid) 1px, transparent 1px);
+  background-size: 16px 16px;
+  padding: 4px 12px 12px;
+}
+
+.trace-board .diagram text { font-family: var(--sans); font-weight: 600; font-size: 17px; fill: currentColor; }
+.trace-endpoint { color: var(--pulse); }
+.trace-idle { color: var(--boardtext); }
+.trace-symbol { fill: var(--board); stroke: currentColor; stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
+.trace-wire, .trace-route { fill: none; stroke-width: 2; }
+.trace-wire { stroke: var(--wire); stroke-dasharray: 2 6; }
+.trace-route { stroke: var(--pulse); }
+.trace-signal { fill: var(--pulse); animation: trace-packet 2s linear infinite; }
+.trace-detour { animation-name: trace-detour; }
+@keyframes trace-packet {
+  from { transform: translateX(0); }
+  to { transform: translateX(var(--travel)); }
+}
+@keyframes trace-detour {
+  from { transform: translate(0, 0); }
+  12% { transform: translate(0, -27px); }
+  88% { transform: translate(var(--travel), -27px); }
+  to { transform: translate(var(--travel), -3px); }
+}
+
+.trace-board .boardfoot {
+  border-top: 1px solid var(--grid);
+  color: var(--pulse);
+  min-height: 44px;
+  overflow-wrap: anywhere;
+}
+.trace-board code { font-family: var(--mono); font-size: .94rem; }
+
+.lesson-timeline li + li { margin-top: 2px; }
+.lesson-timeline button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--muted);
+  padding: 8px;
+  text-align: start;
+  font-size: .94rem;
+  line-height: 1.25;
+}
+.lesson-timeline button:hover { background: var(--panel); color: var(--ink); }
+.lesson-timeline button[aria-current="step"] { background: var(--tint); color: var(--accent); font-weight: 650; }
+.step-index {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--page);
+  font-size: .85rem;
+}
+[aria-current="step"] .step-index { background: var(--button); border-color: var(--button); color: var(--white); }
+.lesson-guide { padding-inline-start: clamp(16px, 3vw, 32px); border-inline-start: 1px solid var(--line); }
+.lesson-guide small { font-size: .875rem; color: var(--muted); }
+.lesson-guide h2 { margin: 4px 0 8px; font-size: clamp(1.4rem, 2vw, 2rem); text-wrap: balance; }
+.lesson-guide p { max-width: 64ch; margin: 0 0 16px; }
+.lesson-guide .actions { justify-content: flex-start; gap: 8px; }
+.lesson button:enabled:active { transform: translateY(1px); }
+.lesson button:disabled { color: var(--muted); background: var(--page); border-color: var(--line); cursor: not-allowed; }
+
+@media (max-width: 680px) {
+  .lesson-timeline li + li { margin-top: 0; }
+  .lesson-guide { border-inline-start: 0; border-top: 1px solid var(--line); padding: 16px 0 0; }
+  .trace-board .diagram { padding: 8px 0; }
+  .trace-board .diagram text { font-size: 23px; }
+  .trace-board .boardhead, .trace-board .boardfoot { padding: 8px 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trace-signal { animation: none; }
+}
