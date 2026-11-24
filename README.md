@@ -8,9 +8,9 @@ Follow a request from the browser to the database and back. Behind the Endpoint 
 
 What happens if the server creates an order but the client never receives the confirmation? This 21-second animation follows the retry and shows how an idempotency key lets the server return the original order.
 
-[![Watch the 3D animation showing the client, orders API, and database](public/videos/safe-retries-preview.png)](public/videos/safe-retries.mp4)
+[![Animated walkthrough showing the client, orders API, and database](public/videos/safe-retries.gif)](public/videos/safe-retries.mp4)
 
-[Open the MP4](public/videos/safe-retries.mp4) · [Try the safe retries lesson](https://behind-the-endpoint.vercel.app/learn/15/1)
+[Play the full-resolution video (MP4)](public/videos/safe-retries.mp4) · [Try the safe retries lesson](https://behind-the-endpoint.vercel.app/learn/15/1)
 
 ## Explore the course
 
