@@ -132,3 +132,7 @@
 .trace-labels span { padding-inline: 3px; overflow-wrap: anywhere; }
 .trace-labels [data-role="source"] { color: var(--node-blue); }
 .trace-labels [data-role="destination"] { color: var(--node-violet); }
+.lesson-concept { max-width: 70ch; margin: 0 0 1.5rem; line-height: 1.65; }
+.trace-board .boardfoot { display: block; }
+.trace-board .boardfoot p { margin: 0 0 .4rem; color: var(--boardtext); }
+#lesson-code { display: block; width: 100%; min-height: 9rem; max-height: 28rem; resize: vertical; padding: .75rem; border: 1px solid var(--line); border-radius: .4rem; background: var(--page); color: var(--ink); font: .94rem/1.5 var(--mono); }

@@ -1,0 +1,29 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval'; worker-src blob:; connect-src 'none'">
+<title>Lesson runner</title>
+<script>
+if (parent !== window && self.origin === "null") {
+  addEventListener("message", function start(event) {
+    if (event.source !== parent || typeof event.data?.code !== "string") return;
+    removeEventListener("message", start);
+    const source = `onmessage = async ({data}) => {
+      try {
+        const result = await new Function("input", data.code)(data.input);
+        postMessage(JSON.stringify(result, null, 2) ?? "undefined");
+      } catch (error) { postMessage(String(error)); }
+    };`;
+    const url = URL.createObjectURL(new Blob([source], {type: "text/javascript"}));
+    const worker = new Worker(url);
+    URL.revokeObjectURL(url);
+    function finish(output) {
+      worker.terminate();
+      parent.postMessage({output}, "*");
+    }
+    worker.onmessage = e => finish(String(e.data).slice(0, 32000));
+    worker.onerror = () => finish("The example could not run. Check your JavaScript and try again.");
+    worker.postMessage(event.data);
+  });
+  parent.postMessage("ready", "*");
+}
+</script>

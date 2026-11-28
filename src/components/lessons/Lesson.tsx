@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useCourseSession } from "@/components/CourseSession";
 import { lessonPath } from "@/lib/routes";
 import { TraceScene } from "./TraceScene";
+import { lessonGuides } from "@/data/lesson-guides";
 import { LessonExtras } from "./LessonExtras";
 import "./lesson.css";
 
@@ -78,7 +79,7 @@ function Trace({ data, current, paused, onToggle }: {
         </g>)}
       </svg>
     </div>
-    <div className="boardfoot"><code>{current.code}</code></div>
+    <div className="boardfoot"><p><strong>{current.title}</strong> · {data.nodes[current.from]} → {data.nodes[current.to]}</p><code>{current.code}</code></div>
   </section>;
 }
 
@@ -99,7 +100,7 @@ export function Lesson({ data, lesson, step }: {
   return <article className="lesson">
     <div className="crumb">Course &nbsp; / &nbsp; {data.group}</div>
     <h1>{data.title}</h1>
-    <p className="intro">{data.intro}</p>
+    <p className="intro">{data.intro}</p><p className="lesson-concept">{lessonGuides[lesson][0]}</p>
     <Trace data={data} current={current} paused={paused} onToggle={togglePause} />
     <div className="grid grid-cols-[minmax(160px,.85fr)_minmax(0,2.15fr)] items-start gap-[clamp(16px,3vw,40px)] max-[681px]:grid-cols-1 max-[681px]:gap-4">
       <ol className="lesson-timeline m-0 list-none p-0 max-[681px]:grid max-[681px]:grid-cols-2 max-[681px]:gap-1" aria-label="Lesson steps">
