@@ -33,11 +33,11 @@ export default async function Page({params}: {params: Promise<{topic:string}>}) 
   return <article className="workshop"><div className="crumb">Learning path · {databaseBranch ? "Databases" : languageBranch ? "Language workshop" : ["backend","lifecycle"].includes(topic) ? "Backend foundations" : "Node.js essentials"}</div>
     <h1>{lesson.title}</h1><p className="intro">{lesson.intro}</p>
     {topic === "runtime" && <a className="underline" href="https://nodejs.org/en/download">Download Node.js</a>}
-    {topic === "lifecycle" && <figure className="my-6">
-      <video className="w-full max-w-lg rounded-xl" aria-label="Animated walkthrough of a book lookup" controls playsInline preload="none" poster="/videos/request-lifecycle-preview.png" width={960} height={960}>
+    {topic === "lifecycle" && <figure className="lifecycle-player">
+      <video aria-label="Animated walkthrough of a book lookup" controls playsInline preload="none" poster="/videos/request-lifecycle-preview.png" width={960} height={960}>
         <source src="/videos/request-lifecycle.mp4" type="video/mp4" />
       </video>
-      <figcaption>Follow a request for book 42 from browser to database and back. Silent animation, 20 seconds.</figcaption>
+      <figcaption>Request walkthrough · 20 seconds · No audio</figcaption>
     </figure>}
     {topic === "async" && <GuideWalkthrough />}
     {lesson.steps.map(s => <section className="build" key={s.title}><h2>{s.title}</h2>{s.body.split("\n\n").map(paragraph => <p key={paragraph}>{paragraph}</p>)}{s.code && <pre><code>{s.code}</code></pre>}</section>)}
