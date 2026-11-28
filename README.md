@@ -1,8 +1,8 @@
 # Behind the Endpoint
 
-Follow a request from the browser to the database and back. Behind the Endpoint teaches backend development through 18 interactive lessons with step-by-step 3D diagrams, runnable JavaScript examples, and practice questions.
+Start with what a backend does and follow a book request through its lifecycle. Learn Node.js, choose JavaScript or TypeScript for a validation exercise, then practice storing books in MongoDB or PostgreSQL. The course also includes 18 backend lessons with runnable examples, practice questions, and animated traces for selected concepts.
 
-[Open the live app](https://behind-the-endpoint.vercel.app) · [Start the first lesson](https://behind-the-endpoint.vercel.app/learn/1/1)
+[Open the live app](https://behind-the-endpoint.vercel.app) · [Start the guided course](https://behind-the-endpoint.vercel.app/guide/backend)
 
 ## Two requests, one order
 
