@@ -86,10 +86,10 @@ export default function CourseShell({ children, course }: { children: ReactNode;
     [item.group,item.title,item.intro].join(" ").toLowerCase().includes(query.trim().toLowerCase()));
   return <CourseSession.Provider value={{ finish, quiz, setQuiz, paused, togglePause: () => setPaused(value => !value) }}>
     <header>
-      <Link className="brand" href={lessonPath(0)}><img src="/endpoint-logo.svg" width="42" height="42" alt="" /><span className="wordmark"><small>behind the</small>endpoint<i aria-hidden="true" /></span></Link>
+      <Link className="brand" href="/" aria-label="Behind the Endpoint course map"><img src="/endpoint-logo.svg" width="42" height="42" alt="" /><span className="wordmark"><small>behind the</small>endpoint<i aria-hidden="true" /></span></Link>
       <nav aria-label="Workspace">{Object.entries(sections).map(([name,label]) =>
-        <Link className={(view || "learn") === name ? "selected" : ""} key={name} href={name === "learn" ? resume : "/"+name}
-          aria-current={(view || "learn") === name ? "page" : undefined}>{label}</Link>)}</nav>
+        <Link className={view === name ? "selected" : ""} key={name} href={name === "learn" ? resume : "/"+name}
+          aria-current={view === name ? "page" : undefined}>{label}</Link>)}</nav>
       <div className="tools ml-auto flex items-center gap-2 max-[361px]:gap-1"><button id="searchBtn" onClick={openSearch}>Search <kbd>Ctrl K</kbd></button>
         <button id="theme" aria-label="Toggle color theme" aria-pressed={dark}
           onClick={() => {save("dark",!dark);setDark(!dark)}}>◐</button></div>
@@ -98,7 +98,7 @@ export default function CourseShell({ children, course }: { children: ReactNode;
       <aside className="min-w-0 border-0 border-r border-solid border-rule bg-surface px-4 py-7 max-[821px]:border-r-0 max-[821px]:border-b max-[821px]:py-0">
       <details id="menu" open={menuOpen} onToggle={event=>setMenuOpen(event.currentTarget.open)}>
         <summary>Course outline</summary>
-        <div id="outline">{groups.map((group,g) => <details key={group} open={group === course[lesson].group}>
+        <div id="outline"><Link className="row" href="/">Learning path</Link>{groups.map((group,g) => <details key={group} open={group === course[lesson].group}>
           <summary>{String(g+1).padStart(2,"0")} &nbsp;{group}</summary>
           {course.map((item,i) => item.group === group ? lessonLink(item,i) : null)}
         </details>)}</div>

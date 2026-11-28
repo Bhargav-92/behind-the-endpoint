@@ -36,6 +36,7 @@ export function Practice({ course }: { course: CourseLesson[] }) {
           {answer !== null && (answer === lesson.correct ? (
             <>
               <p><strong>Correct.</strong> {lesson.why}</p>
+              <Link className="primary inline-block mr-3" href={quiz + 1 < course.length ? lessonPath(quiz + 1) : "/"}>{quiz + 1 < course.length ? "Continue to " + course[quiz + 1].title : "Return to learning path"}</Link>
               <button id="another" onClick={() => changeTopic((quiz + 1) % course.length)}>Next question</button>
             </>
           ) : (
@@ -46,4 +47,3 @@ export function Practice({ course }: { course: CourseLesson[] }) {
     </>
   );
 }
-

@@ -20,10 +20,10 @@ export function LessonExtras({ lesson }: { lesson: number }) {
     } catch (error) { setOutput(String(error)); }
   }
   return <div className="lesson-extras">
-    <section><h2>Runnable example</h2><p>Change the {label} and run the JavaScript to compare results.</p>
+    <section><h2>Lesson sandbox</h2><p>Run the example once. Then change the {label}, predict the result, and run it again to test your prediction.</p>
       <pre><code>{"function demo(input) {\n" + body.split("\n").map(line => "  " + line).join("\n") + "\n}"}</code></pre>
       <form onSubmit={e => {e.preventDefault();run()}}><label>{label}<input value={input} onChange={e=>setInput(e.target.value)} /></label>
-      <button className="primary">Run code</button></form>
+      <button className="primary">Run code</button><button type="button" onClick={() => { setInput(initial); setOutput(""); }}>Reset example</button></form>
       <output aria-live="polite">{output && <pre>{output}</pre>}</output>
     </section>
     <section><h2>Video reference</h2><a className="video-preview" href={"https://www.youtube.com/watch?v="+video} target="_blank" rel="noreferrer">
