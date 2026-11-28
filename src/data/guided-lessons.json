@@ -1,48 +1,73 @@
 {
   "backend": {
     "title": "What is a backend?",
-    "intro": "Imagine a shared reading list. You tap Save on your phone, then open the list on a laptop. Where did the book go?",
+    "intro": "At 8:03 on the bus, you add The Hobbit to your book club’s reading list. At 8:04, Mira opens the list on her laptop and there it is. Your phone has never met her laptop. They have, however, been talking to the same backend.",
     "steps": [
       {
-        "title": "The screen",
-        "body": "The frontend draws the list and collects your input. A button click alone only changes what happens on this device.",
-        "code": "You choose a book and tap Save."
+        "title": "Two screens, one bookshelf",
+        "body": "Picture the list on your phone. Everything you can point at belongs to the interface: the title field, the little cover image, the Save button that moves just enough to reassure your thumb. The frontend is the code that draws those things and reacts when you use them. It can show The Hobbit immediately because it already knows what you typed.\n\nNow put the phone in airplane mode before tapping Save. The interface can still draw a perfectly convincing book. How would Mira’s laptop learn about it? A change on one device needs a way to reach a place both devices can consult. For this app, that place is a service running on a computer reachable over the network. The program doing that shared work is the backend.",
+        "code": ""
       },
       {
-        "title": "Behind the screen",
-        "body": "A server runs a program that receives messages from the app. That program checks who can edit the list and decides what to save. This is backend logic.",
-        "code": "Only a list member can add a book."
+        "title": "What travels when you tap Save?",
+        "body": "The phone sends a request. Think of it as a short note with an address and a job. The address names the club’s list; the job is to add a book. The message carries the title and enough information for the service to recognize your signed-in session. The cover animation stays on the phone. Nobody needs to post a tiny picture of your thumb to the server.\n\nHere is a simplified version of that note. POST is the action, the path identifies the collection of books, and the text between braces is the data. Read it aloud as “please add this title to the Tuesday club’s books.”",
+        "code": "POST /clubs/tuesday/books\n\n{\"title\": \"The Hobbit\"}"
       },
       {
-        "title": "Remembering a change",
-        "body": "The backend can write the book to a database. When your laptop asks for the list, the backend reads the saved books and sends them back.",
-        "code": "Try it on paper: which part draws the list, checks membership, and remembers the books?"
+        "title": "The server has a decision to make",
+        "body": "A server is something that listens for requests and answers them. One physical computer can run several server programs. In this story, the bookshelf program receives the note and picks the piece of code responsible for adding books. That piece of code is called a handler.\n\nSuppose yesterday you could edit the list, but this morning the club made you a guest. Your phone might still have yesterday’s screen open, complete with its optimistic little Save button. The handler looks up your current membership and checks whether it allows edits. It also checks the title. A signed-in editor who submits six spaces has still failed to recommend a book. These decisions are examples of backend logic.",
+        "code": ""
+      },
+      {
+        "title": "Where the book spends the night",
+        "body": "Once the request passes those checks, the handler asks a database to store an entry containing the club, the book title, and a new identifier. An identifier matters because two books can share a title, and next week someone might correct a spelling mistake. The entry needs an identity that survives the edit.\n\nWhy involve a database? The running program could keep a list in memory, which is handy for a quick experiment. Restart that program and its in-memory list disappears. A database can keep committed records on durable storage. After a restart the service can read the list again. The backend makes the decision to save; the database does the remembering.",
+        "code": ""
+      },
+      {
+        "title": "What Mira actually sees",
+        "body": "After the database confirms the write, the handler replies to your phone. In this example, 201 means the service created a new entry. The phone can now replace “Saving…” with “Saved.”\n\nMira opening the list produces a second, independent request. Her browser asks for Tuesday’s books. The service checks that she may read the list, fetches its entries, and returns data. Her frontend turns that data into the row she sees. If Mira already had the page open, she might have to refresh it: sharing a database gives both devices a common record, while live screen updates require the app to fetch or receive changes.",
+        "code": "201 Created\n{\"id\": 42, \"title\": \"The Hobbit\"}"
+      },
+      {
+        "title": "A small mystery to solve",
+        "body": "Your phone displays The Hobbit. You close the app, reopen it, and the book is gone. Mira never saw it either. Which fact would you check first?\n\nFind out whether the server confirmed the save. The phone might have drawn the row while offline, the server might have declined the edit, or the write might have failed. Seeing a row tells you what the interface displayed. Seeing the server’s response gives you evidence about how far the change travelled.",
+        "code": ""
+      },
+      {
+        "title": "In short",
+        "body": "The frontend takes your tap. The backend checks what it means and whether it’s allowed. The database remembers the result so another device can ask for it later.",
+        "code": ""
       }
     ]
   },
   "lifecycle": {
     "title": "The request lifecycle",
-    "intro": "Follow a book lookup from your browser to the database and back.",
+    "intro": "Mira opens book 42. One title appears on her screen. Follow that single lookup and watch how the question changes hands.",
     "steps": [
       {
-        "title": "Send a request",
-        "body": "You open the page for book 42. The browser asks the API for that book. GET describes the operation and the path identifies the resource.",
+        "title": "The browser asks a question",
+        "body": "Mira taps a book in the list. Her browser knows its identifier, 42, but needs its details. It sends an HTTP request. HTTP gives the browser and server a shared way to describe an action and send back the outcome. Here GET means read, and the path says which book to read.\n\nImagine ordering “the usual” in a café you’ve never visited. The staff needs something more specific. The path serves that purpose: the same server might also answer requests for clubs, members, and reading lists.",
         "code": "GET /books/42"
       },
       {
-        "title": "Look up the book",
-        "body": "The server matches the route, reads the book ID and passes it to a parameterized database query.",
-        "code": "SELECT title FROM books WHERE id = $1"
+        "title": "The route finds the right handler",
+        "body": "The server matches the method and path to a route for reading one book. The route has a slot for an identifier. For this request, the slot holds 42. The handler receives that value and applies the rules for this lookup. On a private bookshelf, one rule is that Mira must be allowed to see the book.\n\nAt this point the server knows what Mira wants. It still needs to find out whether book 42 exists.",
+        "code": "GET /books/:id\nThis request supplies id = 42"
       },
       {
-        "title": "Read the result",
-        "body": "The database finds a matching row and returns its title. An empty result would let the handler take a different path.",
-        "code": "row = { title: 'Night Train' }"
+        "title": "The handler looks up the record",
+        "body": "The handler asks storage for the record whose identifier is 42. In a relational database, the query below selects just the title. The placeholder carries the identifier as a separate value. A document database can answer the same question using its own query language.\n\nIf storage returns a record, the handler can build an answer. An empty result is useful information too. A working database can quite accurately report that it has never heard of book 42.",
+        "code": "SELECT title FROM books WHERE id = $1\nParameter: 42"
       },
       {
-        "title": "Return a response",
-        "body": "The handler sends JSON with a 200 status. The browser reads the title and can now display the book.",
-        "code": "200 OK  ·  {\"title\":\"Night Train\"}"
+        "title": "The response goes home",
+        "body": "The handler returns a status and a body. The status tells the browser how the request went. The body carries the book data. Mira’s browser reads the title and draws it in the details panel. The request is now complete. Opening another book starts another trip.\n\nTry predicting two other endings. If the book has been deleted, the service might return 404 so the browser can say “Book not found.” If storage is temporarily unavailable, the service should report a failure instead. Telling Mira her book vanished because a database is having a bad afternoon would make for a very strange book club.",
+        "code": "200 OK\n{\"title\": \"The Hobbit\"}"
+      },
+      {
+        "title": "In short",
+        "body": "Browser asks. Handler checks. Storage answers. Server replies. The browser turns that reply into something Mira can read.",
+        "code": ""
       }
     ]
   },

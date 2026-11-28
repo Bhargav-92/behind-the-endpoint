@@ -98,6 +98,14 @@ button:disabled {
   cursor: not-allowed;
 }
 .primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  max-width: 100%;
+  padding: .65rem 1.25rem;
+  border-radius: 999px;
+  text-align: center;
   border-color: var(--button);
   background: var(--button);
   color: var(--white);

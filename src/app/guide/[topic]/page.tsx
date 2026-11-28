@@ -34,8 +34,8 @@ export default async function Page({params}: {params: Promise<{topic:string}>}) 
     <h1>{lesson.title}</h1><p className="intro">{lesson.intro}</p>
     {topic === "runtime" && <a className="underline" href="https://nodejs.org/en/download">Download Node.js</a>}
     {topic === "async" && <GuideWalkthrough />}
-    {lesson.steps.map(s => <section className="build" key={s.title}><h2>{s.title}</h2><p>{s.body}</p><pre><code>{s.code}</code></pre></section>)}
+    {lesson.steps.map(s => <section className="build" key={s.title}><h2>{s.title}</h2>{s.body.split("\n\n").map(paragraph => <p key={paragraph}>{paragraph}</p>)}{s.code && <pre><code>{s.code}</code></pre>}</section>)}
     {(languageBranch || databaseBranch) && <p><Link className="underline" href={languageBranch?"/guide/language":"/guide/database"}>Change {languageBranch?"language":"database"}</Link></p>}
-    <Link className="primary inline-block" href={databaseBranch?"/start/1":"/guide/"+next}>{databaseBranch?"Continue to the bookshelf project":"Continue · "+title(next)}</Link>
+    <Link className="primary inline-block" href={databaseBranch?"/start/1":"/guide/"+next}>{databaseBranch?"Continue to the bookshelf project":topic === "backend" ? "Follow a request" : "Next: "+title(next)}</Link>
   </article>;
 }

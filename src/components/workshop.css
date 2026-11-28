@@ -12,3 +12,6 @@
 .build { margin:2rem 0; }
 .build pre { overflow:auto; padding:1rem; background:var(--board); color:var(--boardtext); border-radius:8px; }
 .workshop .lesson-extras { display:block; }
+
+.workshop .build p { max-width: 68ch; line-height: 1.7; }
+.workshop .build p + p { margin-top: 1em; }
