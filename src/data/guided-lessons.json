@@ -1,0 +1,244 @@
+{
+  "backend": {
+    "title": "What is a backend?",
+    "intro": "Imagine a shared reading list. You tap Save on your phone, then open the list on a laptop. Where did the book go?",
+    "steps": [
+      {
+        "title": "The screen",
+        "body": "The frontend draws the list and collects your input. A button click alone only changes what happens on this device.",
+        "code": "You choose a book and tap Save."
+      },
+      {
+        "title": "Behind the screen",
+        "body": "A server runs a program that receives messages from the app. That program checks who can edit the list and decides what to save. This is backend logic.",
+        "code": "Only a list member can add a book."
+      },
+      {
+        "title": "Remembering a change",
+        "body": "The backend can write the book to a database. When your laptop asks for the list, the backend reads the saved books and sends them back.",
+        "code": "Try it on paper: which part draws the list, checks membership, and remembers the books?"
+      }
+    ]
+  },
+  "lifecycle": {
+    "title": "The request lifecycle",
+    "intro": "Follow a book lookup from your browser to the database and back.",
+    "steps": [
+      {
+        "title": "Send a request",
+        "body": "You open the page for book 42. The browser asks the API for that book. GET describes the operation and the path identifies the resource.",
+        "code": "GET /books/42"
+      },
+      {
+        "title": "Look up the book",
+        "body": "The server matches the route, reads the book ID and passes it to a parameterized database query.",
+        "code": "SELECT title FROM books WHERE id = $1"
+      },
+      {
+        "title": "Read the result",
+        "body": "The database finds a matching row and returns its title. An empty result would let the handler take a different path.",
+        "code": "row = { title: 'Night Train' }"
+      },
+      {
+        "title": "Return a response",
+        "body": "The handler sends JSON with a 200 status. The browser reads the title and can now display the book.",
+        "code": "200 OK  ·  {\"title\":\"Night Train\"}"
+      }
+    ]
+  },
+  "runtime": {
+    "title": "Run your first Node.js program",
+    "intro": "Node.js runs JavaScript outside a browser. Start with a file that prints one line, before opening a network connection.",
+    "steps": [
+      {
+        "title": "Check the runtime",
+        "body": "Install Node.js from nodejs.org, open a terminal, and check that your shell can find it. A version number means you can run a script.",
+        "code": "node --version"
+      },
+      {
+        "title": "Run a file",
+        "body": "Save the first line below in hello.mjs. Run the command from the same folder. Edit the message and run it again to see where the output comes from.",
+        "code": "// hello.mjs\nconsole.log('Reading list ready');\n\n// Terminal command\n// node hello.mjs"
+      },
+      {
+        "title": "Inspect the process",
+        "body": "Type node in your terminal to open its interactive prompt. Evaluate the expression below to see the folder your program starts in. Type .exit to leave.",
+        "code": "process.cwd()"
+      }
+    ]
+  },
+  "modules": {
+    "title": "Organize code and packages",
+    "intro": "Split book formatting from the script that uses it.",
+    "steps": [
+      {
+        "title": "Export a function",
+        "body": "Save this in book.mjs. A named export makes the function available to other modules.",
+        "code": "export function label(book) {\n  return book.title.toUpperCase();\n}"
+      },
+      {
+        "title": "Import it",
+        "body": "Save this in main.mjs beside book.mjs and run node main.mjs. The relative path identifies your local module.",
+        "code": "import { label } from './book.mjs';\nconsole.log(label({ title: 'Dune' }));"
+      },
+      {
+        "title": "Manage dependencies",
+        "body": "Run npm init -y in a new project folder to create package.json. npm install followed by a package name records that dependency. Commit the lockfile so teammates can reproduce the resolved versions.",
+        "code": "npm init -y\nnpm install --save-dev typescript"
+      }
+    ]
+  },
+  "async": {
+    "title": "Files, promises, and the event loop",
+    "intro": "Predict the three messages before you run this example in an .mjs file.",
+    "steps": [
+      {
+        "title": "Start a read",
+        "body": "A file read takes time. The promise represents its eventual result. Node can continue running the rest of this script while the read is pending.",
+        "code": "import { readFile } from 'node:fs/promises';\nconsole.log('start');\nconst pending = readFile(new URL(import.meta.url), 'utf8');"
+      },
+      {
+        "title": "Yield and resume",
+        "body": "Append these lines. The first two messages are start and pending. After the read completes, the suspended function resumes and reports the character count.",
+        "code": "console.log('pending');\nconst source = await pending;\nconsole.log(source.length);"
+      },
+      {
+        "title": "Handle failure",
+        "body": "Try reading a missing file inside a try block. A rejected promise at an await jumps to catch. Long synchronous calculations still occupy the JavaScript thread and delay other handlers.",
+        "code": "try { await readFile('missing.txt'); }\ncatch (error) { console.error(error.message); }"
+      }
+    ]
+  },
+  "http": {
+    "title": "Serve an HTTP response",
+    "intro": "Turn a script that exits into a process that listens for requests.",
+    "steps": [
+      {
+        "title": "Start listening",
+        "body": "Save this as server.mjs and run node server.mjs. listen keeps the process waiting for connections on your computer.",
+        "code": "import { createServer } from 'node:http';\ncreateServer((req, res) => {\n  res.writeHead(200, { 'Content-Type': 'application/json' });\n  res.end(JSON.stringify({ title: 'Dune' }));\n}).listen(3000, '127.0.0.1');"
+      },
+      {
+        "title": "Inspect the exchange",
+        "body": "Open this address in a browser. Refresh it and the handler runs again. In the browser Network panel inspect the status, content type, and body. Stop the server with Ctrl+C.",
+        "code": "http://127.0.0.1:3000"
+      }
+    ]
+  },
+  "streams": {
+    "title": "Streams and events",
+    "intro": "A large file can travel through a program one chunk at a time.",
+    "steps": [
+      {
+        "title": "Connect a pipeline",
+        "body": "Put books.txt beside this .mjs script, then run the script in that folder. The pipeline reads chunks and writes a copy. Await its promise to detect completion or catch failures.",
+        "code": "import { createReadStream, createWriteStream } from 'node:fs';\nimport { pipeline } from 'node:stream/promises';\nawait pipeline(createReadStream('books.txt'), createWriteStream('copy.txt'));"
+      },
+      {
+        "title": "Match the reader to the writer",
+        "body": "A slow destination needs time to drain its buffer. The pipeline regulates the reader so it can process a file larger than the available memory.",
+        "code": "source → buffered chunks → destination"
+      },
+      {
+        "title": "Listen for an event",
+        "body": "An event emitter lets a producer notify listeners. Register the listener first. Each emit below calls it with the supplied title.",
+        "code": "import { EventEmitter } from 'node:events';\nconst library = new EventEmitter();\nlibrary.on('saved', title => console.log(title));\nlibrary.emit('saved', 'Dune');"
+      }
+    ]
+  },
+  "operate": {
+    "title": "Configure, debug, and test",
+    "intro": "Make the reading-list service easier to run and check.",
+    "steps": [
+      {
+        "title": "Read configuration",
+        "body": "Environment variables arrive as strings. This expression chooses a port when PORT is missing and converts it to a number. Validate the range before passing user-supplied configuration to listen.",
+        "code": "const port = Number(process.env.PORT ?? 3000);"
+      },
+      {
+        "title": "Inspect a running script",
+        "body": "Launch the server with the inspector and a breakpoint at startup. Attach a Node debugger, step into the handler, and inspect req.url when a request arrives.",
+        "code": "node --inspect-brk server.mjs"
+      },
+      {
+        "title": "Test a rule",
+        "body": "Put this in book.test.mjs beside book.mjs from the modules lesson. Run node --test. Change the expected value and read the difference in the failure report.",
+        "code": "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { label } from './book.mjs';\ntest('formats a title', () => {\n  assert.equal(label({ title: 'Dune' }), 'DUNE');\n});"
+      }
+    ]
+  },
+  "js-books": {
+    "title": "Write a book handler in JavaScript",
+    "intro": "Give your API one rule: a book must have a nonempty title.",
+    "steps": [
+      {
+        "title": "Define the boundary",
+        "body": "Incoming JSON can contain any value. Check its shape before calling string methods.",
+        "code": "function titleOf(value) {\n  if (typeof value !== 'string' || !value.trim()) throw new Error('Title required');\n  return value.trim();\n}"
+      },
+      {
+        "title": "Try two inputs",
+        "body": "Save the function and these calls in book.mjs. Run node book.mjs. The first call prints Dune and the second reports the validation error.",
+        "code": "console.log(titleOf(' Dune '));\ntry { titleOf(42); } catch { console.log('Invalid title'); }"
+      }
+    ]
+  },
+  "documents": {
+    "title": "Store books in MongoDB",
+    "intro": "Use mongosh connected to a local MongoDB instance.",
+    "steps": [
+      {
+        "title": "Model a book",
+        "body": "Switch to a practice database. Each book will be a document in the books collection. MongoDB creates the collection on its first insert.",
+        "code": "use reading_list"
+      },
+      {
+        "title": "Save and read",
+        "body": "Insert a document and find it by title. Keep the generated identifier to update this exact book.",
+        "code": "const book = db.books.insertOne({title: 'Dune', finished: false});\ndb.books.findOne({_id: book.insertedId})"
+      },
+      {
+        "title": "Update and delete",
+        "body": "Mark this book as finished. Read it back before removing the practice document.",
+        "code": "db.books.updateOne({_id: book.insertedId}, {$set: {finished: true}})\ndb.books.findOne({_id: book.insertedId})\ndb.books.deleteOne({_id: book.insertedId})"
+      }
+    ]
+  },
+  "typed-books": {
+    "title": "Write a book handler in TypeScript",
+    "intro": "Give your API one rule: a book must have a nonempty title.",
+    "steps": [
+      {
+        "title": "Define the boundary",
+        "body": "Incoming JSON can contain any value. Check its shape before calling string methods.",
+        "code": "function titleOf(value: unknown): string {\n  if (typeof value !== 'string' || !value.trim()) throw new Error('Title required');\n  return value.trim();\n}"
+      },
+      {
+        "title": "Try two inputs",
+        "body": "Save the function and these calls in book.ts. Install TypeScript with npm install -D typescript, then run npx tsc --strict book.ts and node book.js. Observe which checks still happen at runtime.",
+        "code": "console.log(titleOf(' Dune '));\ntry { titleOf(42); } catch { console.log('Invalid title'); }"
+      }
+    ]
+  },
+  "tables": {
+    "title": "Store books in PostgreSQL",
+    "intro": "Use psql connected to a practice PostgreSQL database.",
+    "steps": [
+      {
+        "title": "Model a book",
+        "body": "Create a table. Each row needs an identifier and a title. A primary key lets the database distinguish two books with the same title.",
+        "code": "CREATE TABLE books (id integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY, title text NOT NULL, finished boolean NOT NULL DEFAULT false);"
+      },
+      {
+        "title": "Save and read",
+        "body": "Insert a row and read the generated id. Use it in the next step to select the intended row.",
+        "code": "INSERT INTO books (title) VALUES ('Dune') RETURNING id;\nSELECT id, title FROM books WHERE title = 'Dune';"
+      },
+      {
+        "title": "Update and delete",
+        "body": "Replace 1 with the returned id. Mark the book finished, inspect the row, then remove the practice record.",
+        "code": "UPDATE books SET finished = true WHERE id = 1 RETURNING *;\nDELETE FROM books WHERE id = 1;"
+      }
+    ]
+  }
+}

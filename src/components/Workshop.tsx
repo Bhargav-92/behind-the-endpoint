@@ -22,13 +22,13 @@ export function Workshop({ index }: { index: number }) {
     <nav aria-label="Bookshelf project chapters" className="chapter-links">{foundations.map((c,i) =>
       <Link key={c.title} href={"/start/"+(i+1)} aria-current={index===i ? "step" : undefined}>{i+1}. {["First lookup","Run Node","Serve HTTP","Store data"][i]}</Link>)}</nav>
     <h1>{chapter.title}</h1><p className="intro">{chapter.intro}</p>
-    <section className="story"><h2>Follow the lookup</h2>
+    {index === 2 ? <section className="story"><h2>Follow the lookup</h2>
       <div className="frames">{chapter.frames.map(([name, value], i) =>
         <button key={i} aria-pressed={step===i} onClick={()=>{setPlaying(false);setStep(i);}}>
           <small>{i+1}. {name}</small><code>{value}</code></button>)}</div>
       <p aria-live="polite">{chapter.frames[step][2]}</p>
       <button onClick={()=>{if (!playing && step===2) setStep(0);setPlaying(!playing);}}>{playing ? "Pause walkthrough" : step===2 ? "Replay walkthrough" : "Play walkthrough"}</button>
-    </section>
+    </section> : <ol>{chapter.frames.map(([name, value, explanation]) => <li key={name}><strong>{name}</strong> · <code>{value}</code><p>{explanation}</p></li>)}</ol>}
     <div className="lesson-extras"><CodeSandbox demo={chapter.demo} task={chapter.task} /></div>
     <section className="build"><h2>Build your bookshelf</h2><p>{chapter.build}</p>
       {index===1 && <a href="https://nodejs.org/en/download">Download Node.js</a>}

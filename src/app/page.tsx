@@ -7,8 +7,8 @@ export default function Home() {
   const groups = [...new Set(course.map(item => item.group))];
   return <>
     <h1>Learn backend from scratch</h1>
-    <p className="intro">Build a bookshelf API from your first JavaScript lookup to a server that answers your browser. Start in the sandbox, then run the same idea on your own computer.</p>
-    <Link className="primary inline-block" href="/start/1">Start building the bookshelf</Link>
+    <p className="intro">Follow a book request from the browser to the backend. Learn Node.js, choose JavaScript or TypeScript, then store your books in MongoDB or PostgreSQL.</p>
+    <Link className="primary inline-block" href="/guide/backend">Start with the backend</Link>
     <h2>Backend lessons</h2><p>After the project, follow a request through routing, databases, permissions, and deployment.</p>
     <CourseEntry stepCounts={course.map(item => item.steps.length)} />
     {groups.map((group, stage) => <section className="box" key={group}>

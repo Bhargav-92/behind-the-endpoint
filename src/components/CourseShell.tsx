@@ -98,7 +98,7 @@ export default function CourseShell({ children, course }: { children: ReactNode;
       <aside className="min-w-0 border-0 border-r border-solid border-rule bg-surface px-4 py-7 max-[821px]:border-r-0 max-[821px]:border-b max-[821px]:py-0">
       <details id="menu" open={menuOpen} onToggle={event=>setMenuOpen(event.currentTarget.open)}>
         <summary>Course outline</summary>
-        <div id="outline"><Link className="row" href="/">Learning path</Link>{groups.map((group,g) => <details key={group} open={group === course[lesson].group}>
+        <div id="outline"><Link className="row" href="/guide/backend">Learning path</Link>{groups.map((group,g) => <details key={group} open={group === course[lesson].group}>
           <summary>{String(g+1).padStart(2,"0")} &nbsp;{group}</summary>
           {course.map((item,i) => item.group === group ? lessonLink(item,i) : null)}
         </details>)}</div>

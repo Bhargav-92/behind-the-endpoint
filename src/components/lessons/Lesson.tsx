@@ -91,6 +91,7 @@ export function Lesson({ data, lesson, step }: {
   const router = useRouter();
   const { finish, paused, togglePause } = useCourseSession();
   const current = data.steps[step];
+  const showTrace = ["The request lifecycle", "Transactions", "Work queues", "Cache-aside reads", "Distributed tracing"].includes(data.title);
   const isLast = step === data.steps.length - 1;
 
   function goToStep(index: number) {
@@ -101,7 +102,7 @@ export function Lesson({ data, lesson, step }: {
     <div className="crumb">Course &nbsp; / &nbsp; {data.group}</div>
     <h1>{data.title}</h1>
     <p className="intro">{data.intro}</p><p className="lesson-concept">{lessonGuides[lesson][0]}</p>
-    <Trace data={data} current={current} paused={paused} onToggle={togglePause} />
+    {showTrace && <Trace data={data} current={current} paused={paused} onToggle={togglePause} />}
     <div className="grid grid-cols-[minmax(160px,.85fr)_minmax(0,2.15fr)] items-start gap-[clamp(16px,3vw,40px)] max-[681px]:grid-cols-1 max-[681px]:gap-4">
       <ol className="lesson-timeline m-0 list-none p-0 max-[681px]:grid max-[681px]:grid-cols-2 max-[681px]:gap-1" aria-label="Lesson steps">
         {data.steps.map((item, index) => <li key={item.title}>
@@ -114,6 +115,7 @@ export function Lesson({ data, lesson, step }: {
         <small>Step {step + 1} of {data.steps.length}</small>
         <h2 id="step-title">{current.title}</h2>
         <p>{current.body}</p>
+        {!showTrace && <pre><code>{current.code}</code></pre>}
         <div className="actions">
           <button type="button" id="prev" disabled={step === 0} onClick={() => goToStep(step - 1)}>Back</button>
           <button type="button" className="primary" id="next" onClick={() => isLast ? finish(lesson) : goToStep(step + 1)}>{isLast ? "Finish lesson" : "Next step"}</button>
