@@ -1,0 +1,14 @@
+.chapter-links,.frames { display:flex; flex-wrap:wrap; gap:.6rem; margin:0 0 1.2rem; }
+.chapter-links a { padding:.35rem .65rem; border-bottom:2px solid var(--line); }
+.chapter-links [aria-current] { border-color:var(--accent); font-weight:700; }
+.story { background:var(--board); color:var(--boardtext); padding:clamp(1rem,3vw,2rem); border-radius:12px; }
+.story h2 { margin-top:0; }
+.frames button { flex:1 1 9rem; min-width:0; text-align:left; background:transparent; color:var(--boardtext); border:1px solid var(--wire); padding:.85rem; position:relative; overflow:hidden; }
+.frames code,.frames small { display:block; overflow-wrap:anywhere; }
+.frames [aria-pressed=true] { border-color:var(--pulse); }
+.frames [aria-pressed=true]::after { content:""; position:absolute; bottom:0; left:0; height:3px; width:100%; background:var(--pulse); transform-origin:left; animation:explain .7s ease-out; }
+@keyframes explain { from {transform:scaleX(0)} to {transform:scaleX(1)} }
+@media(prefers-reduced-motion:reduce){.frames [aria-pressed=true]::after{animation:none}}
+.build { margin:2rem 0; }
+.build pre { overflow:auto; padding:1rem; background:var(--board); color:var(--boardtext); border-radius:8px; }
+.workshop .lesson-extras { display:block; }

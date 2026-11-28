@@ -4,7 +4,10 @@ import { demos } from "@/data/demos";
 import { lessonGuides } from "@/data/lesson-guides";
 
 export function Sandbox({ lesson }: { lesson: number }) {
-  const [label, initial, starter] = demos[lesson];
+  return <CodeSandbox demo={demos[lesson]} task={lessonGuides[lesson][1]} />;
+}
+export function CodeSandbox({ demo, task }: { demo: readonly [string, string, string]; task: string }) {
+  const [label, initial, starter] = demo;
   const [code, setCode] = useState<string>(starter);
   const [input, setInput] = useState<string>(initial);
   const [output, setOutput] = useState("");
@@ -48,6 +51,6 @@ export function Sandbox({ lesson }: { lesson: number }) {
       <button type="button" onClick={() => { cleanup.current(); setInput(initial); setCode(starter); setOutput(""); }}>Reset example</button>
     </form>
     <strong>Result</strong><pre aria-live="polite">{output || "Run the example to see its result."}</pre>
-    <h3>Try this change</h3><p>{lessonGuides[lesson][1]}</p>
+    <h3>Try this change</h3><p>{task}</p>
   </section>;
 }
